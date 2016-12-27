@@ -1,0 +1,48 @@
+{
+    "useprotocol": "mqtt",
+    "cse": {
+        "cbhost": "192.168.0.13",
+        "cbport": "7579",
+        "cbname": "mobius-yt",
+        "cbcseid": "/mobius-yt"
+    },
+    "ae": {
+        "aeid": "SSkLPsg89",
+        "appid": "0.2.481.1.1",
+        "appname": "tempact",
+        "appport": "9727",
+        "bodytype": "json",
+        "tasport": "3105"
+    },
+    "cnt": [
+        {
+            "parentpath": "/tempact",
+            "ctname": "homepot01_ctrl"
+        },
+        {
+            "parentpath": "/tempact",
+            "ctname": "cow_1"
+        },
+        {
+            "parentpath": "/tempact",
+            "ctname": "cow_2"
+        }
+    ],
+    "sub": [
+        {
+            "parentpath": "/tempact/cow_1",
+            "subname": "sub_4",
+            "nu": "mqtt://localhost/SSkLPsg89"
+        },
+        {
+            "parentpath": "/tempact/homepot01_ctrl",
+            "subname": "sub_1",
+            "nu": "mqtt://localhost/SSkLPsg89"
+        },
+        {
+            "parentpath": "/tempact/cow_2",
+            "subname": "sub_2",
+            "nu": "mqtt://localhost/SSkLPsg89"
+        }
+    ]
+}
