@@ -1,0 +1,109 @@
+
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_LIS3DH.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_MLX90614.h>
+
+
+// Used for software SPI
+#define LIS3DH_CLK 13
+#define LIS3DH_MISO 12
+#define LIS3DH_MOSI 11
+// Used for hardware & software SPI
+#define LIS3DH_CS 10
+
+
+Adafruit_LIS3DH lis = Adafruit_LIS3DH();
+Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+
+
+
+void setup(void) {
+
+
+  Serial.begin(9600);
+  
+  if (! lis.begin(0x18)) {   // change this to 0x19 for alternative i2c address
+    while (1);
+  }
+  lis.setRange(LIS3DH_RANGE_2_G);   // 2, 4, 8 or 16 G!
+  
+  mlx.begin();
+}
+
+ double X,Y,Z;
+ double ThrashHold = 4600;
+ int count = 0;
+ int walk = 0;
+ double E;
+ double temp;
+ double PeakData[5] ={4600,4600,4600,4600,4600};
+ double sum1,sum2;
+
+ 
+void loop() {
+
+  
+  lis.read();      // get X Y and Z data at once
+
+   X = lis.x;
+   Y= lis.y;
+   Z= lis.z;
+   E = sqrt(X*X+Y*Y+Z*Z);
+  
+    sensors_event_t event; 
+  lis.getEvent(&event);
+  
+   
+  
+     count = walk % 6;
+     if(count > 0)
+      {
+        for (int i = count; i > 0 ; i--)
+       {
+       PeakData[i] = PeakData[i-1];
+      
+       }
+    }
+  
+   PeakData[0] = E ;
+ 
+  
+  
+   for(int i = 0 ; i < 4 ; i++)
+   {
+       sum1 += PeakData[i];
+       sum2 += PeakData[i+1];
+   }
+
+  
+   temp = (0.1 * ((sum1/5) - (sum2/5)))  + ( PeakData[0] * 0.7 );
+
+   if(temp > 14000 )
+   {
+       walk++;
+       ThrashHold =temp;
+        Serial.print(walk);
+        Serial.print(mlx.readAmbientTempC()); // 주변온도를 읽습니다.
+        Serial.print(mlx.readObjectTempC());
+        Serial.println();
+       if(temp>15000) temp  =0;
+   }
+   else {
+    Serial.print(0);
+    Serial.print(mlx.readAmbientTempC()); // 주변온도를 읽습니다.
+   Serial.print(mlx.readObjectTempC());
+   Serial.println();
+   }
+
+   sum1 = 0;
+   sum2 =0;
+
+
+
+ 
+ 
+  delay(100); 
+  walk = 0;
+}
