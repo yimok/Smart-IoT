@@ -1,27 +1,7 @@
----
-layout: page
-title: ""
-modified: 2016-12-25
-tags: [blog]
-comments: true
-image:
-  feature: back8.jpg
----
-
-
-<section id="table-of-contents" class="toc">
-  <header>
-    <h3>Overview</h3>
-  </header>
-<div id="drawer" markdown="1">
-*  Auto generated table of contents
-{:toc}
-</div>
-</section><!-- /#table-of-contents -->
 
 
 # IoT Termproject
---------
+
 - 동물에 장착할 End Device로 부터 온도, 3축 데이터를 수집하여 Gateway에서 정제후 Server로 데이터 전송하여 소의 수태,질병을 판별하는 작은 시스템
 - github : [https://github.com/yimok/Smart-IoT](https://github.com/yimok/Smart-IoT)
 
